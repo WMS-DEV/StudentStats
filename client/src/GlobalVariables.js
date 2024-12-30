@@ -1,0 +1,1 @@
+export const apiLink = "https://studentstats.internal.wmsdev.pl";

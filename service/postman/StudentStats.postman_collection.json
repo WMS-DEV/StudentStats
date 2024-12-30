@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "1ab4d91a-0066-4291-ab7a-30319d61ba0b",
+		"name": "StudentStats",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22057309",
+		"_collection_link": "https://lively-meadow-271302.postman.co/workspace/My-Workspace~533c4214-2669-47f7-8a2e-307ff0f50f6c/collection/22057309-1ab4d91a-0066-4291-ab7a-30319d61ba0b?action=share&source=collection_link&creator=22057309"
+	},
+	"item": [
+		{
+			"name": "access-token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"requestToken\": \"\",\n    \"tokenSecret\": \"\",\n    \"verifier\": \"\",\n    \"universityId\": \"PWR\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/auth/access-token",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"auth",
+						"access-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "request-token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"universityId\": \"PWR\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/auth/request-token",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"auth",
+						"request-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "downloadCsv",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/downloadCsv",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"downloadCsv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getData",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/getData",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"getData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "universities",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/universities",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"universities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getStaticMockedData",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/getStaticMockedData",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"getStaticMockedData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDynamicMockedData/[1-100]",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/getDynamicMockedData/50",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"getDynamicMockedData",
+						"50"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "actuator",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/actuator",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"actuator"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

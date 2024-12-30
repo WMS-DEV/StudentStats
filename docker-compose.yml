@@ -1,0 +1,46 @@
+services:
+  client:
+    restart: always
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    environment:
+      - SENTRY_DSN=${SENTRY_DSN}
+    ports:
+      - "3000:3000"
+
+  server:
+    restart: unless-stopped
+    build:
+      context: ./service
+      dockerfile: Dockerfile
+    environment:
+        - SERVICE_JWT_SECRET_KEY=${SERVICE_JWT_SECRET_KEY}
+        - SERVICE_DB_URL=${SERVICE_DB_URL}
+        - SERVICE_DB_LOGIN=${SERVICE_DB_LOGIN}
+        - SERVICE_DB_PASSWORD=${SERVICE_DB_PASSWORD}
+        - SERVICE_SENTRY_DSN=${SENTRY_DSN}
+        - SPRING_PROFILES_ACTIVE=${SERVICE_SPRING_PROFILES_ACTIVE}
+    ports:
+      - "${SERVICE_PORT}:8080"
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${SERVICE_DB_LOGIN}
+      POSTGRES_PASSWORD: ${SERVICE_DB_PASSWORD}
+      POSTGRES_DB: ${SERVICE_DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
+
+networks:
+  default:
+    name: student-stats-network
+    external: true
