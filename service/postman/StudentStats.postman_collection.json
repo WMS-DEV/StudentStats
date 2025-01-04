@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "1ab4d91a-0066-4291-ab7a-30319d61ba0b",
+		"_postman_id": "19ecc057-2971-4142-9265-0538f9d332f0",
 		"name": "StudentStats",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "22057309",
-		"_collection_link": "https://lively-meadow-271302.postman.co/workspace/My-Workspace~533c4214-2669-47f7-8a2e-307ff0f50f6c/collection/22057309-1ab4d91a-0066-4291-ab7a-30319d61ba0b?action=share&source=collection_link&creator=22057309"
+		"_exporter_id": "31053642"
 	},
 	"item": [
 		{
@@ -69,7 +68,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -91,6 +90,16 @@
 		{
 			"name": "getData",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -175,6 +184,28 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
