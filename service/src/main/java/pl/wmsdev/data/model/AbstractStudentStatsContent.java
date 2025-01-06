@@ -1,6 +1,6 @@
 package pl.wmsdev.data.model;
 
-import lombok.*;
+import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 

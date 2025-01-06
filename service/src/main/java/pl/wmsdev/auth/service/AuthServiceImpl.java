@@ -16,7 +16,6 @@ import pl.wmsdev.usos.factory.UsosFactory;
 import pl.wmsdev.usos4j.model.auth.UsosAccessToken;
 
 import javax.security.auth.login.CredentialNotFoundException;
-import java.util.Map;
 
 @Slf4j
 @Service

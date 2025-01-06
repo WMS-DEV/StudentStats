@@ -3,16 +3,14 @@ package pl.wmsdev.usos.cards.creators;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.wmsdev.data.model.StudentStatsChart;
-import pl.wmsdev.data.model.StudentStatsChartValue;
-import pl.wmsdev.data.model.StudentStatsObject;
-import pl.wmsdev.data.model.StudentStatsText;
-import pl.wmsdev.usos.model.Course;
-import pl.wmsdev.usos.model.Studies;
-import pl.wmsdev.usos.model.Semester;
-import pl.wmsdev.utils.internationalization.LocalizedMessageService;
+import pl.wmsdev.data.model.*;
 import pl.wmsdev.data.values.StudentStatsCategory;
 import pl.wmsdev.data.values.StudentStatsChartType;
+import pl.wmsdev.usos.model.Course;
+import pl.wmsdev.usos.model.Semester;
+import pl.wmsdev.usos.model.Studies;
+import pl.wmsdev.utils.internationalization.LocalizedMessageService;
+import pl.wmsdev.utils.values.Gender;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -29,7 +27,9 @@ public class UsosCoursesCardCreator implements UsosCardCreator {
     @Override
     public List<StudentStatsObject> getAlwaysPresentCards(List<Studies> userStudies) {
         return List.of(createBestCourseCard(userStudies), createWorstCourseCard(userStudies),
-                createMarkGraphCard(userStudies), createMostMarksCard(userStudies), totalECTSPointsCard(userStudies));
+                createMarkGraphCard(userStudies), createMostMarksCard(userStudies), totalECTSPointsCard(userStudies),
+                createHighestEctsCourseCard(userStudies), createLowestEctsCourseCard(userStudies), createCourseByTeachersGenderCard(userStudies),
+                createCourseByTypesCard(userStudies));
     }
 
     @Override
@@ -38,21 +38,13 @@ public class UsosCoursesCardCreator implements UsosCardCreator {
     }
 
     private List<Course> getCoursesWithMark(List<Studies> studies, BigDecimal mark) {
-        return studies.stream()
-                .map(Studies::semesters)
-                .flatMap(List::stream)
-                .map(Semester::courses)
-                .flatMap(List::stream)
+        return extractCoursesFromStudies(studies)
                 .filter(course -> course.getMark().equals(mark))
                 .toList();
     }
 
     private StudentStatsObject totalECTSPointsCard(List<Studies> userStudies) {
-        var totalECTSPoints = userStudies.stream()
-                .map(Studies::semesters)
-                .flatMap(List::stream)
-                .map(Semester::courses)
-                .flatMap(List::stream)
+        var totalECTSPoints = extractCoursesFromStudies(userStudies)
                 .map(Course::getEcts)
                 .reduce(0, Integer::sum);
 
@@ -95,12 +87,7 @@ public class UsosCoursesCardCreator implements UsosCardCreator {
 
     private StudentStatsObject createCourseCard(List<Studies> userStudies, Comparator<Course> courseComparator,
                                                 String titleToFormat, Function<Course, String> valueGenerator) {
-        var bestMark = userStudies.stream()
-                .map(Studies::semesters)
-                .flatMap(List::stream)
-                .map(Semester::courses)
-                .flatMap(List::stream)
-                .max(courseComparator);
+        var bestMark = extractCoursesFromStudies(userStudies).max(courseComparator);
 
         return StudentStatsObject.builder()
                 .category(StudentStatsCategory.COURSES)
@@ -206,5 +193,92 @@ public class UsosCoursesCardCreator implements UsosCardCreator {
                 .map(BigDecimal::valueOf)
                 .map(mark -> new AbstractMap.SimpleEntry<>(mark, getCoursesWithMark(studies, mark)))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    private StudentStatsObject createHighestEctsCourseCard(List<Studies> studies) {
+        return createCourseByEctsCard(studies,
+                Comparator.comparing(Course::getEcts),
+                "msg.UsosCoursesCardCreator.highest-ects");
+    }
+
+    private StudentStatsObject createLowestEctsCourseCard(List<Studies> studies) {
+        return createCourseByEctsCard(studies,
+                Comparator.comparing(Course::getEcts).reversed(),
+                "msg.UsosCoursesCardCreator.lowest-ects");
+    }
+
+    private StudentStatsObject createCourseByEctsCard(List<Studies> studies, Comparator<Course> comparator, String messageKey) {
+        return findCourseWithMostEcts(studies, comparator)
+                .map(course -> StudentStatsText.asObject(
+                        StudentStatsCategory.COURSES,
+                        msgService.getMessageWithArgsFromContext(
+                                messageKey,
+                                course.getName().trim()
+                        ),
+                        null,
+                        String.valueOf(course.getEcts())
+                ))
+                .orElseThrow();
+    }
+
+    private Optional<Course> findCourseWithMostEcts(List<Studies> studies, Comparator<Course> comparator) {
+        return extractCoursesFromStudies(studies).max(comparator);
+    }
+
+    private StudentStatsObject createCourseByTeachersGenderCard(List<Studies> studies) {
+        Map<Gender, Long> teachersByGender = countTeachersByGender(studies);
+        return StudentStatsDoubleText.asObject(
+                StudentStatsCategory.COURSES,
+                msgService.getMessageFromContext("msg.UsosCoursesCardCreator.teachers-gender-count"),
+                null,
+                String.valueOf(teachersByGender.getOrDefault(Gender.FEMALE, 0L)),
+                String.valueOf(teachersByGender.getOrDefault(Gender.MALE, 0L))
+        );
+    }
+
+    private Map<Gender, Long> countTeachersByGender(List<Studies> studies) {
+        return extractCoursesFromStudies(studies)
+                .flatMap(course -> course.getTeachers().stream())
+                .distinct()
+                .collect(Collectors.groupingBy(this::determineGender, Collectors.counting()));
+    }
+
+    private Gender determineGender(String teacher) {
+        String firstName = getFirstName(teacher);
+        return firstName.endsWith("a") ? Gender.FEMALE : Gender.MALE; // In Polish language female names end with 'a'
+    }
+
+    private String getFirstName(String fullName) {
+        return fullName.split(" ")[0];
+    }
+
+    private StudentStatsObject createCourseByTypesCard(List<Studies> studies) {
+        List<StudentStatsChartValue> values = countCourseTypes(studies);
+        return StudentStatsObject.builder()
+                .content(StudentStatsChart.builder()
+                        .values(values)
+                        .chartType(StudentStatsChartType.BAR)
+                        .title(msgService.getMessageFromContext("msg.UsosCoursesCardCreator.course-types-graph"))
+                        .build())
+                .category(StudentStatsCategory.COURSES)
+                .build();
+    }
+
+    private List<StudentStatsChartValue> countCourseTypes(List<Studies> studies) {
+        return extractCoursesFromStudies(studies)
+                .flatMap(course -> course.getCourseTypes().stream())
+                .collect(Collectors.groupingBy(type -> type, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .map(entry -> StudentStatsChartValue.of(Double.valueOf(entry.getValue()), entry.getKey()))
+                .toList();
+    }
+
+    private Stream<Course> extractCoursesFromStudies(List<Studies> studies) {
+        return studies.stream()
+                .map(Studies::semesters)
+                .flatMap(List::stream)
+                .map(Semester::courses)
+                .flatMap(List::stream);
     }
 }

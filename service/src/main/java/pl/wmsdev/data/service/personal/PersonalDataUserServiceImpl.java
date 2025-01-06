@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pl.wmsdev.data.dto.PersonalDataUser;
-import pl.wmsdev.usos.values.UsosStudentStatus;
 import pl.wmsdev.usos4j.client.UsosUserAPI;
 import pl.wmsdev.usos4j.model.user.UsosUser;
 import pl.wmsdev.utils.converter.PersonalDataUserConverter;

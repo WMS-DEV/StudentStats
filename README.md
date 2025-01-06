@@ -9,7 +9,7 @@ This project leverages the usos4j library for seamless integration with the USOS
 ## Getting started
 
 - provide environment variables (see [.env-sample](/.env-sample))
-- provide data for supported universities in [supported_universities.csv](/service/src/main/resources/data/supported_universities.csv)
+- provide data for supported universities in [.supported_universities.csv](/service/src/main/resources/data) (see [supported_universities-example.csv](/service/src/main/resources/data/supported_universities-example.csv))
   - you can find links to generate API keys at [USOS API installations page](https://apps.usos.edu.pl/developers/api/definitions/installations/)
 - run with Docker
 

@@ -5,6 +5,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.stereotype.Service;
 import pl.wmsdev.data.model.*;
+import pl.wmsdev.data.values.StudentStatsCategory;
+import pl.wmsdev.data.values.StudentStatsChartType;
 import pl.wmsdev.usos.cards.service.UsosCardService;
 import pl.wmsdev.usos.model.Course;
 import pl.wmsdev.usos.model.PersonalData;
@@ -12,8 +14,6 @@ import pl.wmsdev.usos.model.Semester;
 import pl.wmsdev.usos.model.Studies;
 import pl.wmsdev.usos.values.UsosStudentStatus;
 import pl.wmsdev.utils.internationalization.LocalizedMessageService;
-import pl.wmsdev.data.values.StudentStatsCategory;
-import pl.wmsdev.data.values.StudentStatsChartType;
 
 import java.io.StringWriter;
 import java.math.BigDecimal;
@@ -100,11 +100,8 @@ public class StudentStatsServiceImpl implements StudentStatsService {
     private String generateCsv(List<Studies> studies) {
         StringWriter writer = new StringWriter();
 
-        try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.EXCEL.builder()
-                .setHeader("ID", "Semester", "Course name", "ECTS", "Grade")
-                .build())) {
-
-            writer.write("\ufeff");
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.builder()
+                .setHeader("ID", "Semester", "Course name", "ECTS", "Grade").build())) {
 
             AtomicInteger idCounter = new AtomicInteger(1);
 
@@ -130,7 +127,7 @@ public class StudentStatsServiceImpl implements StudentStatsService {
             throw new RuntimeException("Error generating CSV", e);
         }
 
-        return "data:text/csv;charset=utf-8," + writer;
+        return writer.toString();
     }
 
     @Override
@@ -430,6 +427,30 @@ public class StudentStatsServiceImpl implements StudentStatsService {
                         .title(msgService.getMessageFromContext("msg.StudentStatsService.sum-of-fines-for-books"))
                         .subtitle("")
                         .value("10.50zł")
+                        .build())
+                .build());
+
+        studentStatsMockContent.add(StudentStatsObject.builder()
+                .category(StudentStatsCategory.COURSES)
+                .content(StudentStatsDoubleText.builder()
+                        .title(msgService.getMessageFromContext("msg.UsosCoursesCardCreator.teachers-gender-count"))
+                        .subtitle("")
+                        .value1("9")
+                        .value2("33")
+                        .build())
+                .build());
+
+        studentStatsMockContent.add(StudentStatsObject.builder()
+                .category(StudentStatsCategory.COURSES)
+                .content(StudentStatsChart.builder()
+                        .title(msgService.getMessageFromContext("msg.UsosCoursesCardCreator.course-types-graph"))
+                        .subtitle("")
+                        .chartType(StudentStatsChartType.BAR)
+                        .values(List.of(new StudentStatsChartValue(22.0, "Wykład"),
+                                new StudentStatsChartValue(19.0, "Ćwiczenia"),
+                                new StudentStatsChartValue(15.0, "Zajęcia laboratoryjne"),
+                                new StudentStatsChartValue(8.0, "Projekt"),
+                                new StudentStatsChartValue(2.0, "Seminarium")))
                         .build())
                 .build());
 
@@ -778,6 +799,30 @@ public class StudentStatsServiceImpl implements StudentStatsService {
                         .title(msgService.getMessageFromContext("msg.StudentStatsService.sum-of-fines-for-books"))
                         .subtitle("")
                         .value(String.format("%.2f", (random.nextDouble()*100)) + "zl")
+                        .build())
+                .build());
+
+        studentStatsMockContent.add(StudentStatsObject.builder()
+                .category(StudentStatsCategory.COURSES)
+                .content(StudentStatsDoubleText.builder()
+                        .title(msgService.getMessageFromContext("msg.UsosCoursesCardCreator.teachers-gender-count"))
+                        .subtitle("")
+                        .value1(String.format("%d", random.nextInt(101)))
+                        .value2(String.format("%d", random.nextInt(101)))
+                        .build())
+                .build());
+
+        studentStatsMockContent.add(StudentStatsObject.builder()
+                .category(StudentStatsCategory.COURSES)
+                .content(StudentStatsChart.builder()
+                        .title(msgService.getMessageFromContext("msg.UsosCoursesCardCreator.course-types-graph"))
+                        .subtitle("")
+                        .chartType(StudentStatsChartType.BAR)
+                        .values(List.of(new StudentStatsChartValue(22.0, "Wykład"),
+                                new StudentStatsChartValue(19.0, "Ćwiczenia"),
+                                new StudentStatsChartValue(15.0, "Zajęcia laboratoryjne"),
+                                new StudentStatsChartValue(8.0, "Projekt"),
+                                new StudentStatsChartValue(2.0, "Seminarium")))
                         .build())
                 .build());
 

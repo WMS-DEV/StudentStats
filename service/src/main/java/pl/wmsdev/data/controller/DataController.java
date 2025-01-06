@@ -4,15 +4,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 import pl.wmsdev.data.model.StudentStatsData;
 import pl.wmsdev.data.service.StudentStatsService;
 
@@ -59,7 +62,7 @@ public class DataController {
     @Operation(summary = "Download data as CSV")
     public ResponseEntity<String> getDataCSV() {
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "text/csv; charset=UTF-8")
+                .header(HttpHeaders.CONTENT_TYPE, "text/csv")
                 .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", studentStatsFileName))
                 .body(studentStatsService.getStudentStatisticsCsv());
     }
@@ -68,7 +71,7 @@ public class DataController {
     @Operation(summary = "Download mock data as CSV")
     public ResponseEntity<String> getMockDataCSV() {
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "text/csv; charset=UTF-8")
+                .header(HttpHeaders.CONTENT_TYPE, "text/csv")
                 .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", studentStatsFileName))
                 .body(studentStatsService.getMockStudentStatisticsCsv());
     }

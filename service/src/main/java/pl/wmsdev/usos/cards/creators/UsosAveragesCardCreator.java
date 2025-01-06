@@ -1,7 +1,6 @@
 package pl.wmsdev.usos.cards.creators;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pl.wmsdev.data.model.StudentStatsChart;
 import pl.wmsdev.data.model.StudentStatsChartValue;
@@ -17,7 +16,6 @@ import pl.wmsdev.utils.internationalization.LocalizedMessageService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;

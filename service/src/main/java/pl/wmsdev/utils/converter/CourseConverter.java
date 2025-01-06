@@ -7,6 +7,7 @@ import pl.wmsdev.usos4j.model.courses.UsosCourseEdition;
 import pl.wmsdev.utils.internationalization.LocalizedMessageService;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ public class CourseConverter {
                 .mark(BigDecimal.ZERO)
                 .Ects(0)
                 .teachers(getTeachers(courseEdition))
+                .courseTypes(getCourseTypes(courseEdition))
                 .build();
     }
 
@@ -31,5 +33,11 @@ public class CourseConverter {
                 .flatMap(e -> e.lecturers().stream())
                 .map(e -> e.firstName() + " " + e.lastName())
                 .collect(Collectors.toSet());
+    }
+
+    private List<String> getCourseTypes(UsosCourseEdition course) {
+        return course.userGroups().stream()
+                .map(group -> msgService.getLocalized(group.classType()))
+                .collect(Collectors.toList());
     }
 }

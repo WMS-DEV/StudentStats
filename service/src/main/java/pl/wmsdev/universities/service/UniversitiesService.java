@@ -1,7 +1,7 @@
 package pl.wmsdev.universities.service;
 
-import pl.wmsdev.universities.dto.UsosUniversityAuthenticationDetails;
 import pl.wmsdev.universities.dto.UniversityDisplayable;
+import pl.wmsdev.universities.dto.UsosUniversityAuthenticationDetails;
 
 import java.util.List;
 

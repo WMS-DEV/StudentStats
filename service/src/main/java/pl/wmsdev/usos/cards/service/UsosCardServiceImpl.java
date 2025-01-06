@@ -7,8 +7,8 @@ import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import pl.wmsdev.data.model.StudentStatsObject;
-import pl.wmsdev.usos.model.PersonalData;
 import pl.wmsdev.usos.cards.creators.UsosCardCreator;
+import pl.wmsdev.usos.model.PersonalData;
 import pl.wmsdev.usos.model.Semester;
 import pl.wmsdev.usos.model.Studies;
 

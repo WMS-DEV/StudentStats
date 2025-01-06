@@ -1,6 +1,9 @@
 package pl.wmsdev.universities.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 // WARNING: Should not be sent to frontend, backend development only
 // Contains API keys credentials

@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import pl.wmsdev.data.values.StudentStatsChartType;
 
-
 import java.util.List;
 
 @SuperBuilder

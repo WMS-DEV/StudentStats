@@ -7,7 +7,6 @@ import pl.wmsdev.data.dto.ProgrammeDetails;
 import pl.wmsdev.usos4j.client.UsosUserAPI;
 import pl.wmsdev.usos4j.model.progs.UsosProgramme;
 import pl.wmsdev.utils.converter.ProgrammeDetailsConverter;
-import pl.wmsdev.utils.internationalization.LocalizedMessageService;
 
 import java.util.concurrent.CompletableFuture;
 
