@@ -17,15 +17,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     @Value("${frontend.url}")
     private String frontendUrl;
-    @Value("${local.dev.url}")
-    private String localDevUrl;
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
@@ -67,7 +65,6 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.addAllowedOrigin(frontendUrl);
-        corsConfig.addAllowedOrigin(localDevUrl);
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
         corsConfig.addAllowedHeader("*");
         corsConfig.setAllowCredentials(true);
