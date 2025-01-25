@@ -1,1 +1,1 @@
-export const apiLink = "https://studentstats.internal.wmsdev.pl";
+export const apiLink = process.env.REACT_APP_BACKEND_URL;

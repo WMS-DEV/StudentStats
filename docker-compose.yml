@@ -4,8 +4,10 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    environment:
-      - SENTRY_DSN=${SENTRY_DSN}
+      target: production
+      args:
+        - REACT_APP_SENTRY_DSN=${CLIENT_SENTRY_DSN}
+        - REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
     ports:
       - "3000:3000"
 
@@ -19,7 +21,7 @@ services:
         - SERVICE_DB_URL=${SERVICE_DB_URL}
         - SERVICE_DB_LOGIN=${SERVICE_DB_LOGIN}
         - SERVICE_DB_PASSWORD=${SERVICE_DB_PASSWORD}
-        - SERVICE_SENTRY_DSN=${SENTRY_DSN}
+        - SERVICE_SENTRY_DSN=${SERVICE_SENTRY_DSN}
         - SPRING_PROFILES_ACTIVE=${SERVICE_SPRING_PROFILES_ACTIVE}
     ports:
       - "${SERVICE_PORT}:8080"

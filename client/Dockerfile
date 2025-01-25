@@ -1,7 +1,5 @@
-# Stage 1: Build the React app
-FROM node:18-alpine as builder
-
-# Set the working directory
+# Stage 1: Base Node image
+FROM node:18-alpine as base
 WORKDIR /app
 
 # Copy package files and install dependencies
@@ -15,23 +13,22 @@ COPY . .
 ARG REACT_APP_SENTRY_DSN
 ENV REACT_APP_SENTRY_DSN=$REACT_APP_SENTRY_DSN
 
-# Build the application
+ARG REACT_APP_BACKEND_URL
+ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
+
+# Stage 2: Production Build
+FROM base as build
 RUN npm run build
 
-# Stage 2: Serve the application using nginx
-FROM nginx:alpine
-
-# Copy custom nginx configuration
-COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
-
-# Remove the default nginx HTML files
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copy the built React app from the builder stage
-COPY --from=builder /app/build /usr/share/nginx/html
-
-# Expose the application's port
+# Stage 3: Development Environment
+FROM base as development
 EXPOSE 3000
+CMD ["npm", "start"]
 
-# Start nginx
+# Stage 4: Nginx for Production Deployment
+FROM nginx:alpine as production
+COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 3000
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
