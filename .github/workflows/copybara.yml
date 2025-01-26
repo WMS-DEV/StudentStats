@@ -1,0 +1,19 @@
+name: Move code
+on:
+  push:
+  pull_request_target:
+jobs:
+  move-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: olivr/copybara-action@v1.2.4
+        with:
+          ssh_key: ${{ secrets.SSH_KEY }}
+          access_token: ${{ secrets.GH_TOKEN }}
+          sot_repo: WMS-DEV/StudentStats-internal
+          destination_repo: WMS-DEV/StudentStats
+          committer: WMS_BOT <kontakt@wmsdev.pl>
+          push_exclude: service/src/main/resources/data/.supported_universities.csv
