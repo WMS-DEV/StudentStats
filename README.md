@@ -27,3 +27,17 @@ Check out the deployed version here: [StudentStats Live 🌐](https://studentsta
 ## Postman configuration for easier debugging 🔧
 
 You can test backend functionality with Postman using our collection, pre-configured with endpoints and environments. All you need to do is to import [this folder](/service/postman) into Postman.
+
+## Acknowledgments
+
+Special thanks to the contributors who made this project possible.
+
+### Backend
+
+- [@pszumanski](https://github.com/pszumanski)
+- [@MDybek](https://github.com/MDybek)
+- [@tommilewski](https://github.com/tommilewski)
+
+### Frontend
+
+- [@Kapixar](https://github.com/Kapixar)
