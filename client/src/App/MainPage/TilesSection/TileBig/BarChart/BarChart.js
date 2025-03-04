@@ -3,6 +3,11 @@ import { Bar } from "react-chartjs-2";
 import * as S from './styles';
 
 export const BarChart = ({ chartData, title }) => {
+
+  const fractionValue = Math.max(...chartData.datasets[0].data) * 0.1;
+  
+  const minYvalue = Math.max(0, Math.floor(Math.min(...chartData.datasets[0].data) - fractionValue));  
+
   return (
     <S.BarChart>
       <S.Heading>{title}</S.Heading>
@@ -24,6 +29,7 @@ export const BarChart = ({ chartData, title }) => {
             maintainAspectRatio: false,
             scales: {
               y: {
+                min: minYvalue,
                 ticks: {
                   color: '#FFFAE9',
                 }

@@ -15,7 +15,7 @@ export const ThemeButton = styled.input.attrs({ type: 'checkbox' })`
     display: none;
     visibility: hidden;
 
-    &:checked + label {
+    &:checked + label svg {
         transform: rotate(360deg);
     }
 `

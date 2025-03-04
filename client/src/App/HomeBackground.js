@@ -64,7 +64,7 @@ export function HomeBackground() {
             }
         };
     
-        let mouseX = 0, mouseY = 0;
+        let pointerX = 0, pointerY = 0;
         const easeAmount = 20;
         const logoSpeed = 5;
         // function to run animation loop
@@ -76,8 +76,8 @@ export function HomeBackground() {
             const logos = logosRef.current;
             for (const logo of logos) {
                 // Calculate the desired position
-                const targetX = (mouseX - logo.x) * logo.opacity / logoSpeed;
-                const targetY = (mouseY - logo.y) * logo.opacity / logoSpeed;
+                const targetX = (pointerX - logo.x) * logo.opacity / logoSpeed;
+                const targetY = (pointerY - logo.y) * logo.opacity / logoSpeed;
         
                 // Lerp towards the target position
                 logo.xModifier += (targetX - logo.xModifier) / easeAmount;
@@ -96,27 +96,30 @@ export function HomeBackground() {
             timer = setTimeout(setupLogos, 500);
         } 
 
-        // background movement
-        // initially mousemove, after motion detected, deviceorientation
-        document.addEventListener('mousemove', handleMouseMove);
-
-        if(window.DeviceMotionEvent) {
-            window.addEventListener("devicemotion", (e) => {
-                if(e.rotationRate.alpha === null || e.rotationRate.beta === null || e.rotationRate.gamma === null) return;
-                canvasRef.current.animate({
-                    opacity: [1, 0, 1],
-                    offset: [0, 0.5, 1],
-                }, {duration: 1000, easing: "linear"})
-                setTimeout(() => {
-                    window.addEventListener("deviceorientation", handleInitialOrientation, {once: true});
-                    document.removeEventListener('mousemove', handleMouseMove);
-                }, 400);
-            }, {once: true});
-        }
+        const prefersReducedMotion = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
+        
+        if (!prefersReducedMotion) {
+            // background movement
+            // initially mousemove, after motion detected, deviceorientation
+            document.addEventListener('mousemove', handleMouseMove);
+            if(window.DeviceMotionEvent) {
+                window.addEventListener("devicemotion", (e) => {
+                    if(!canvasRef.current || e.rotationRate.alpha === null || e.rotationRate.beta === null || e.rotationRate.gamma === null) return;
+                    canvasRef.current.animate({
+                        opacity: [1, 0, 1],
+                        offset: [0, 0.5, 1],
+                    }, {duration: 1000, easing: "linear"})
+                    setTimeout(() => {
+                        window.addEventListener("deviceorientation", handleInitialOrientation, {once: true});
+                        document.removeEventListener('mousemove', handleMouseMove);
+                    }, 400);
+                }, {once: true});
+            }
+        } 
 
         function handleMouseMove(event) {
-            mouseX = event.clientX;
-            mouseY = event.clientY;
+            pointerX = event.clientX;
+            pointerY = event.clientY;
         }
 
         let initXOrientation = null, initYOrientation = null;
@@ -129,16 +132,17 @@ export function HomeBackground() {
         function handleOrientation(event) {
             let xOrientation = event.gamma;
             let yOrientation = Math.max(Math.min(event.beta, 90), -90);
-
-            const logos = logosRef.current;
-            for (const logo of logos) {
-                logo.xModifier = (initXOrientation - xOrientation) * logo.opacity * 2;
-                logo.yModifier = (initYOrientation - yOrientation) * logo.opacity * 2;
-            }
+            
+            pointerX = (initXOrientation - xOrientation) * window.innerWidth / 30;
+            pointerY = (initYOrientation - yOrientation) * window.innerHeight / 60;
         }
 
         return () => {
             cancelAnimationFrame(requestIdRef.current);
+            window.removeEventListener('resize', handleResize);
+            document.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener("deviceorientation", handleOrientation);
+            window.removeEventListener("deviceorientation", handleInitialOrientation);
         };
         
     }, []); // <-- Add empty dependency array here

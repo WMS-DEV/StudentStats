@@ -30,6 +30,7 @@ export const lightTheme = {
   name: Mode.LIGHT,
   fontColor: '#222',
   fontColorGray: '#484542',
+  shimmerColor: '#CEC8BC',
   login: {
     backgroundColor: '#CEC8BC',
     tileColor: '#DCDCDC',
@@ -71,6 +72,7 @@ export const darkTheme = {
   name: Mode.DARK,
   fontColor: '#CEC8BC',
   fontColorGray: '#CEC8BC',
+  shimmerColor: '#44804F',
   loginForm: {
     backgroundColor: '#484542'
   },

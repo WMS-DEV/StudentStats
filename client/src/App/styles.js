@@ -29,9 +29,12 @@ export const HomePage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-content: center;
   justify-content: center;
-  height: 100vh;
-  //background-image: linear-gradient(var(--pageAngle), var(--pageBg1), var(--pageBg2));
+  flex-wrap: wrap;
+  height: calc(100vh - 4rem);
+  translate: 0 4rem;
+  overflow: hidden;
   background-color: ${({ theme }) => theme.colorMode.tilesSection.backgroundColor};
   transition: background-color .5s ease;
 
@@ -46,6 +49,7 @@ export const HomeForm = styled.form`
   z-index: 1;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   align-items: center;
   justify-content: center;
   background-color: #fff;
@@ -79,15 +83,14 @@ export const Button = styled.button`
   background-color: #DDDDDD;
   background: ${lightTheme.login.buttonColor};
   color: white;
-  padding: 0px 2.5vh;
-  margin: 1.5vh 0 0;
+  padding: 1em;
   border-radius: 5px;
   font-family: 'JetBrains Mono';
   font-size: 0.8rem;
   cursor: pointer;
   transition: .2s;
-  height: 7vh;
-  line-height: 3vh;
+  // height: 7vh;
+  // line-height: 3vh;
   user-select: none;
   overflow: hidden;
   text-decoration: none;
@@ -126,14 +129,15 @@ export const Button = styled.button`
 `;
 
 export const ErrorMessage = styled.p`
-  color: #a1c4fd;
+  color: #fc7970;
+  font-weight: 900;
   margin-top: 1.25vh;
 `;
 
 export const Canvas = styled.canvas`
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   top: 0;
   z-index: 0;
   filter: contrast(0.5) opacity(0);

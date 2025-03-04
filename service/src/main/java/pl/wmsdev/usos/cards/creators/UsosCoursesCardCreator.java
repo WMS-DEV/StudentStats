@@ -114,20 +114,21 @@ public class UsosCoursesCardCreator implements UsosCardCreator {
     }
 
     private List<StudentStatsChartValue> createECTSChartValues(List<Studies> userStudies) {
-        List<StudentStatsChartValue> values = new ArrayList<>();
+        AtomicInteger sumAllECTS = new AtomicInteger(0);
 
-        userStudies.stream()
+        return userStudies.stream()
                 .flatMap(studies -> studies.semesters().stream())
-                .forEach(semester -> {
-                    int totalECTS = semester.courses().stream()
-                            .mapToInt(Course::getEcts)
-                            .sum();
-                    values.add(new StudentStatsChartValue((double) totalECTS, semester.name()));
-                });
-
-        Collections.reverse(values);
-
-        return values;
+                .map(semester -> {
+                        int totalECTS = semester.courses().stream()
+                                .mapToInt(Course::getEcts)
+                                .sum();
+                        double cumulativeECTS = sumAllECTS.addAndGet(totalECTS);
+                        return new StudentStatsChartValue(cumulativeECTS, semester.name());
+                })
+                .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
+                        Collections.reverse(list);
+                        return list;
+                }));
     }
 
     private StudentStatsObject buildECTSChart(List<StudentStatsChartValue> values) {

@@ -17,8 +17,8 @@ export const LoginPageButton = styled(Button)`
     }
 
     &:disabled {
-        background-color: hsla(120, 20%, 35%, 0.85);
-        pointer-events: none;
+        filter: brightness(80%);
+        cursor: not-allowed;
     }
 ` 
 
@@ -35,8 +35,12 @@ export const InfoBox = styled.div`
   justify-content: center;
   align-items: center;
   margin: 10px;
-  min-width: min(60vh, 60vw);
-  max-width: min(500px, 90vw);
+  width: min(60vh, 60vw);
+  max-width: 90vw;
+  max-height: 90%;
+  font-size: clamp(0.5rem, 5vw, 1rem);
+  overflow-y: auto;
+
   border-radius: 10px;
   text-align: center;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
@@ -75,6 +79,11 @@ export const Selection = styled.select`
 
     &:focus {
         outline: none;
+    }
+
+    &:disabled {
+      filter: brightness(80%);
+      cursor: not-allowed;
     }
 
     &:-webkit-autofill,

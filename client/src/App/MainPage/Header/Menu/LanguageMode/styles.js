@@ -17,7 +17,7 @@ export const FlagButton = styled.input.attrs({ type: 'checkbox' })`
     display: none;
     visibility: hidden;
 
-    &:checked + label {
+    &:checked + label svg {
         transform: rotate(-360deg);
     }
 `
@@ -40,6 +40,11 @@ export const FlagLabel = styled.label`
         width: 100%;
         transform-origin: center;
         transition: inherit;
+    }
+
+    input:disabled + & {
+        cursor: not-allowed;
+        opacity: .7;
     }
 `
 

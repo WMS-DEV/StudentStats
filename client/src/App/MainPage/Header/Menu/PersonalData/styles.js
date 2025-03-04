@@ -9,6 +9,11 @@ export const PersonalDataButton = styled.button`
     background-color: transparent;
     transition: all .5s ease;
     cursor: pointer;
+
+    &:disabled {
+      opacity: .7;
+      cursor: not-allowed;
+    }
 `
 
 export const UserIcon = styled.svg.attrs({

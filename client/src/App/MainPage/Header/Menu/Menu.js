@@ -37,6 +37,7 @@ export const Menu = ({ loggedIn }) => {
   const handleGradesDownload = async () => {
     const jwt = localStorage.getItem("jwt");
     const gradesBlob = await getGrades(jwt);
+    if(!gradesBlob) return;
     const objectURL = URL.createObjectURL(gradesBlob);
 
     if (!gradesDownloadRef.current) {
@@ -58,7 +59,7 @@ export const Menu = ({ loggedIn }) => {
           onClick={handleGradesDownload}
         />
       )}
-      {loggedIn && <PersonalData onClick={switchProfilePopoverVisibility} />}
+      {loggedIn && <PersonalData onClick={switchProfilePopoverVisibility} disabled={true} />}
       {showProfilePopover && (
         <ProfilePopover
           setShowPopover={setShowProfilePopover}

@@ -34,7 +34,6 @@ function getRandomQuestion(language) {
     const question = languageQuestions[randomId];
     const answers = question.answers;
     const correctAnswer = question.correct;
-    console.log(randomId);
     
     return [question.question, answers, correctAnswer];
 }
@@ -44,7 +43,6 @@ function getCurrentQuestion(language) {
     const question = questions[language][id];
     const answers = question.answers;
     const correctAnswer = question.correct;
-    console.log(id);
     
     return [question.question, answers, correctAnswer];
 }
@@ -161,8 +159,8 @@ export const Page404 = () => {
     return (
     <>
         <Header loggedIn={false}/>
-        <HomeBackground/>
         <S.HomePageFlexible>
+            <HomeBackground/>
             <S.Info404>
                 <S.LargeTitle>404</S.LargeTitle>
                 <S.Paragraph>{t('paragraph404')}</S.Paragraph>

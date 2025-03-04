@@ -21,7 +21,6 @@ export const LineChart = styled.div`
 export const Subheading = styled.div`
     height: 10%;
     padding: 0;
-    font-size: 2.75vh;
     font-weight: italic;
     text-align: center;
 `;
@@ -29,12 +28,10 @@ export const Subheading = styled.div`
 export const Heading = styled.div`
     height: 20%;
     padding: 5vh 4vh 0;
-    font-size: 3.25vh;
     text-align: center;
 
     @media (max-width: 1000px) {
         padding: 3vh 1.5vh 0;
-        font-size: 3vh;
         height: 25%;
     }
 `;

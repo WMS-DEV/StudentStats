@@ -6,19 +6,23 @@ export const GradesDownloadIcon = styled.svg.attrs({
   xmlnsXlink: "http://www.w3.org/1999/xlink",
 })`
   position: relative;
-  height: 2rem;
+  height: 1.5rem;
   width: 2rem;
   border: none;
   padding: 0;
   transition: all 0.5s ease;
-  cursor: pointer;
   fill: ${({ theme }) => theme.colorMode.fontColor};
 `;
 
 export const GradesDownloadAnchor = styled.a`
   position: relative;
-  height: 2rem;
+  height: 1.5rem;
   border: none;
   transition: all 0.5s ease;
   cursor: pointer;
+
+  &.disabled {
+    opacity: .7;
+    cursor: not-allowed;
+  }
 `;

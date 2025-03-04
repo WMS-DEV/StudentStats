@@ -141,6 +141,9 @@ export const AuthProvider = ({ children }) => {
   const { i18n } = useTranslation();
   const [userData, setUserData] = useState(null);
 
+  const isLogged = localStorage.getItem('jwt') ? true : false;
+  const isDataLoaded = isLogged && !userData;
+
   useEffect(() => {
     refreshUserData();
   }, []);
@@ -171,7 +174,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const handleLogout = () => {
-    console.log("logging out");
+    console.log("Logged out");
     const storedTheme = localStorage.getItem("colorMode");
     const storedLanguage = localStorage.getItem("languageMode");
     localStorage.clear();
@@ -182,8 +185,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const refreshUserData = async () => {
-    console.log("refreshing");
-
     if (window.location.pathname !== "/dashboard") return;
     setUserData(null);
     const savedJWT = localStorage.getItem("jwt");
@@ -213,6 +214,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const value = {
+    isDataLoaded,
     userData,
     refreshUserData: refreshUserData,
     onLoginClick: handleLoginRequest,

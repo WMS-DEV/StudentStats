@@ -1,6 +1,7 @@
 import * as S from "./styles";
 import { Fragment, useContext } from "react";
 import { ColorModeContext } from "../../../../../App";
+import { useTranslation } from "react-i18next";
 
 export const Mode = Object.freeze({
     LIGHT: Symbol("light"),
@@ -25,10 +26,11 @@ const DarkThemeIcon = () => (
 
 export const ColorMode = () => {
     const colorMode = useContext(ColorModeContext);
+    const { t } = useTranslation();
     return (
         <Fragment>
             <S.ThemeButton id="theme-button" onClick={colorMode.switchColorMode}/>
-            <S.ThemeLabel htmlFor="theme-button">
+            <S.ThemeLabel htmlFor="theme-button" data-desc={t('menuTipColorMode')}>
                 <LightThemeIcon />
                 <DarkThemeIcon />
             </S.ThemeLabel>

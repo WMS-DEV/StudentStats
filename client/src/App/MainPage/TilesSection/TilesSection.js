@@ -287,6 +287,12 @@ export const TilesSection = () => {
             <TileMedium data={emptyData}></TileMedium>
             <TileSmall data={emptyData}></TileSmall>
             <TileMedium data={emptyData}></TileMedium>
+            <TileSmall data={emptyData}></TileSmall>
+            <TileMedium data={emptyData}></TileMedium>
+            <TileMedium data={emptyData}></TileMedium>
+            <TileMedium data={emptyData}></TileMedium>
+            <TileSmall data={emptyData}></TileSmall>
+            <TileMedium data={emptyData}></TileMedium>
         </S.TilesSection>
     }
 }

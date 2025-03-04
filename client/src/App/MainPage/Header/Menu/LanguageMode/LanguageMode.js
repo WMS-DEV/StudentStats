@@ -2,15 +2,14 @@ import * as S from "./styles";
 import { Fragment, useState } from "react";
 import i18n from '../../../../../Language.js';
 import { useAuth } from '../../../../../AuthorizationProvider.js';
-
+import { useTranslation } from "react-i18next";
 
 export const LanguageMode = () => {
     const [_, setTemp] = useState();
-    const { userData, refreshUserData } = useAuth();
+    const { isDataLoaded, refreshUserData } = useAuth();
+    const { t } = useTranslation();
 
-    const isLogged = localStorage.getItem('jwt') ? true : false;
-
-    const cantChangeLanguage = isLogged && !userData && window.location.pathname === '/dashboard';
+    const cantChangeLanguage = isDataLoaded && window.location.pathname === '/dashboard';
 
     const switchLanguageMode = () => {
         if(cantChangeLanguage) return;
@@ -28,7 +27,7 @@ export const LanguageMode = () => {
     return (
         <Fragment>
             <S.FlagButton id="lang-button" onClick={switchLanguageMode} disabled={cantChangeLanguage}/>
-            <S.FlagLabel htmlFor="lang-button">
+            <S.FlagLabel htmlFor="lang-button" data-desc={t('menuTipLanguageMode')}>
                 <S.StyledEnFlag />
                 <S.StyledPlFlag />
             </S.FlagLabel>

@@ -1,4 +1,6 @@
 import * as S from "./styles";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "../../../../../AuthorizationProvider";
 
 const FilterIcon = () => (
     <S.FilterIcon viewBox="0 0 24 24">
@@ -8,8 +10,12 @@ const FilterIcon = () => (
     </S.FilterIcon>
 )
 
-export const CategoryFilter = ({ onClick }) => (
-    <S.CategoryFilterButton onClick={onClick}>
+export const CategoryFilter = ({ onClick }) => {
+    const { t } = useTranslation();
+    const { isDataLoaded } = useAuth();
+    return (
+    <S.CategoryFilterButton onClick={onClick} data-desc={t('menuTipFilters')} disabled={isDataLoaded}>
         <FilterIcon/>
     </S.CategoryFilterButton>
-)
+    )
+}

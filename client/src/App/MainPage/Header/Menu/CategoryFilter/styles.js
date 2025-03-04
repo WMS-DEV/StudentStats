@@ -9,7 +9,12 @@ export const CategoryFilterButton = styled.button`
     background-color: transparent;
     transition: all .5s ease;
     cursor: pointer;
-    vertical-align: middle
+    vertical-align: middle;
+
+    &:disabled {
+      opacity: .7;
+      cursor: not-allowed;
+    }
 `
 
 export const FilterIcon = styled.svg.attrs({

@@ -21,6 +21,7 @@ export const LoginPage = () => {
     onUniversityChange,
   } = useAuth();
 
+  const [isConnectedToServer, setIsConnectedToServer] = useState(true);
   const [usosLoginDisabled, setUsosLoginDisabled] = useState(true);
   const [animationFinished, setAnimationFinished] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,8 +52,14 @@ export const LoginPage = () => {
       setIsLoading(true);
       onLoginCallback(searchParams.get("oauth_verifier"));
     }
+  }, []);
+
+  useEffect(() => {
     getUniversities().then(response => {
-      setUniversities(response ? response : [{ "id": "0", "name": t('loginError') }])
+      if(!response) return setIsConnectedToServer(false);
+      
+      setIsConnectedToServer(true);
+      setUniversities(response);
       document.querySelector('select').options[0].selected = true
       setUsosLoginDisabled(true);
     });
@@ -61,20 +68,21 @@ export const LoginPage = () => {
   return (
     <>
       <Header loggedIn={false} />
-      <HomeBackground />
       <S.HomePage>
+        <HomeBackground />
         {isLoading && <S.LoadingSpinner animation="border" role='status' variant='success' />}
         <S.HomeForm>
           <S.Title>{t('loginWelcome')}</S.Title>
-          <S.Selection defaultValue="" onChange={handleUniversityChange}>
+          <S.Selection defaultValue="" onChange={handleUniversityChange} disabled={!isConnectedToServer}>
             <S.Option value="" disabled hidden>{t('loginChooseMonit')}</S.Option>
             {universities.map(university =>
               <S.Option key={university.id} value={university.id}>
                 {university.name}
               </S.Option>)}
           </S.Selection>
-          <S.LoginPageButton disabled={usosLoginDisabled} type="button" onClick={handleLoginReal}>{t('loginUSOS')}</S.LoginPageButton>
-          <S.LoginPageButton type="button" onClick={onLoginDemo}>{t('loginDemo')}</S.LoginPageButton>
+          <S.LoginPageButton disabled={usosLoginDisabled || !isConnectedToServer} type="button" onClick={handleLoginReal}>{t('loginUSOS')}</S.LoginPageButton>
+          <S.LoginPageButton disabled={isLoading || !isConnectedToServer} className="outline" type="button" onClick={onLoginDemo}>{t('loginDemo')}</S.LoginPageButton>
+          {!isConnectedToServer && <S.ErrorMessage>{t('loginError')}</S.ErrorMessage>}
         </S.HomeForm>
         <S.InfoBox onMouseLeave={handleMouseLeave} animationFinished={animationFinished}>
           <S.InfoMessage>

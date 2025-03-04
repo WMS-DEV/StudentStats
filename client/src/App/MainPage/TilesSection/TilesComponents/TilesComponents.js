@@ -2,97 +2,45 @@ import styled from 'styled-components';
 
 export const ValueDiv = styled.div`
     width: 100%;
-    height: 35%;
+    flex-grow: 1;
+    flex-basis: 30%;
+    max-height: 30%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 
-    font-size: 4vw;
-    ${({ isValueLong }) => isValueLong && `
-            font-size: 2.2vw;
-        `}
-
-    @media (max-width: 1000px) {
-        height: 15%;
-        font-size: 5vh;
-    }
-`
+    font-size: clamp(1.5rem, ${({ isValueLong }) => isValueLong ? '6vw, 2rem' : '8vw, 3rem'});
+`;
 
 export const Value = styled.div`
     width: 50%;
-    height: 100%;
+    height: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 50px;
     text-align: center;
 `;
 
 export const TitleContainer = styled.div`
     width: 100%;
-    height: 45%;
+    height: 40%;
+    flex-basis: 40%;
+
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: 1rem;
     padding-bottom: 0;
     box-sizing: border-box;
-    font-size: 1rem;
-    ${({ isTitleLong }) => isTitleLong && `
-            font-size: 0.65rem;
-    `}
-
-    @media (min-width: 1400px) and (max-height: 1000px) {
-        ${({ isTitleLong }) => isTitleLong && `
-            font-size: 0.75rem;
-        `}
-    }
-
-    @media (min-width: 1000px) and (max-height: 560px) {
-        font-size: 0.8rem;
-        ${({ isTitleLong }) => isTitleLong && `
-            font-size: 0.7rem;
-        `}
-    }
-
-    @media (min-width: 1000px) and (min-height: 1000px) {
-        font-size: 1.2rem;
-    }
-
-    @media (min-width: 1600px) {
-        font-size: 1.2rem;
-    }
-
-    @media (min-width: 2000px) and (min-height: 1100px) {
-        font-size: 1.5rem;
-        padding: 2rem;
-    }
-
-    &::-webkit-scrollbar {
-        width: 13px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: grey;
-        border-radius: 10px;
-        border: 3px solid transparent;
-    }
-
-    &::-webkit-scrollbar-track {
-        height: 10px;
-        background-color: transparent;
-    }
-
     text-align: left;
 
     @media (max-width: 1000px) {
-        padding: .5rem;
-        height: 50%;
         .branding & {
             height: 35%;
         }
     }
+
+    font-size: clamp(min(0.7rem, 2.5vw), ${({ titleLength }) => -titleLength * 0.012 + 1.2 }rem, 1.5rem);
 `;
 
 export const Title = styled.div`
@@ -103,27 +51,40 @@ export const Title = styled.div`
 `;
 
 export const SubtitleContainer = styled(TitleContainer)`
-    height: 18%;
-    padding: 6px;
-    display: flex;
-    justify-content: center;
-    @media (max-width: 1000px) {
-        height: 35%;
+    position: relative;
+    max-height: 30%;
+    flex-basis: 30%;
+    flex-grow: 1;
+    overflow: hidden;
+
+    font-size: clamp(0.5rem, ${({ subTitleLength }) => -subTitleLength * 0.0033 + 0.9 }rem, 0.8rem);
+
+    &::before {
+        content: "(···)";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        font-size: 1.2rem;
+        opacity: 0.5;
+        transition: .2s;
+    }
+
+    div:hover > &::before, .branding &::before {
+        opacity: 0;    
     }
 `
 
 export const Subtitle = styled.div`
-    font-size: 1vw;
     text-align: center;
     height: min-content;
+    margin-top: auto;
 
+    opacity: 0;
+    transition: .2s;
 
-    @media (max-width: 1000px) {
-        font-size: 0.9rem;
-    }
-
-    @media (max-width: 500px) {
-        font-size: 0.7rem;
+    div:hover > div > &, .branding & {
+        opacity: 1;    
     }
 `
 
@@ -140,4 +101,7 @@ export const TileImg = styled.img`
     max-width: 90%;
     width: auto;
     height: auto;
+    transition: all .5s ease;
+    object-fit: contain;
+    margin: auto;
 `;
