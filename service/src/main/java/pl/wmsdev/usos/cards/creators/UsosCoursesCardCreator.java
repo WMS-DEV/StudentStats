@@ -1,6 +1,5 @@
 package pl.wmsdev.usos.cards.creators;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.wmsdev.data.model.*;
@@ -14,6 +13,7 @@ import pl.wmsdev.utils.values.Gender;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
