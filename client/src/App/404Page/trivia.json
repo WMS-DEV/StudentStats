@@ -15,7 +15,11 @@
         "13": {"question": "Co obejmuje działalność zespołu „Inżynierzy PWr” na Politechnice Wrocławskiej?", "answers": ["Badania naukowe", "Prace dyplomowe", "Zawody esportowe", "Wykłady"], "correct": 2},
         "14": {"question": "Gdzie jest zegar binarny?", "answers": ["A-1", "Serowiec", "Technopolis", "Teki"], "correct": 1},
         "15": {"question": "Jakim koloru jest wyróżniony jeden napis na budynku C-7?", "answers": ["białym", "żółtym", "czerwonym", "niebieskim"], "correct": 2},
-        "16": {"question": "Kiedy jest święto PWr?", "answers": ["30 maja", "21 stycznia", "7 marca", "15 listopada"], "correct": 3}
+        "16": {"question": "Kiedy jest święto PWr?", "answers": ["30 maja", "21 stycznia", "7 marca", "15 listopada"], "correct": 3},
+        "17": {"question": "Co to ALO?", "answers": ["Akademickie Liceum Ogólnokształcące", "Abażur Lekko Opalizujący", "Akademicka Lista Obecności", "Akademnicka Liga Oszczepów"], "correct": 0},
+        "18": {"question": "Ile jest akademików na Tekach?", "answers": [3, 4, 5, 6], "correct": 2},
+        "19": {"question": "Kiedy założono PWr?", "answers": [1945, 1950, 1974, 1938], "correct": 0},
+        "20": {"question": "Gdzie na wejściu znajduje się okrągłe 'kartonowe' krzesło?", "answers": ["A-1", "Bibliotech", "Serowiec", "SKS"], "correct": 1}
     },
     "en": {
         "1": {"question": "What place does Wrocław University of Science and Technology hold in the 2023 Perspektywy Foundation Ranking of Technical Universities?", "answers": [1, 3, 8, 4], "correct": 3},
@@ -33,6 +37,10 @@
         "13": {"question": "What does the activity of the 'PWr Engineers' team at Wrocław University of Science and Technology include?", "answers": ["Scientific research", "Diploma theses", "Esports competitions", "Lectures"], "correct": 2},
         "14": {"question": "Where is the binary clock?", "answers": ["A-1", "Serowiec", "Technopolis", "Teki"], "correct": 1},
         "15": {"question": "What color is the highlighted inscription on the C-7 building?", "answers": ["white", "yellow", "red", "blue"], "correct": 2},
-        "16": {"question": "When is PWr Day?", "answers": ["May 30", "January 21", "March 7", "November 15"], "correct": 3}
+        "16": {"question": "When is PWr Day?", "answers": ["May 30", "January 21", "March 7", "November 15"], "correct": 3},
+        "17": {"question": "What is ALO?", "answers": ["Academic High School", "Slightly Opalescent Lampshade", "Academic Attendance List", "Academic Javelin League"], "correct": 0},
+        "18": {"question": "How many dormitories are there on the Teki?", "answers": [3, 4, 5, 6], "correct": 2},
+        "19": {"question": "When was Wrocław University of Science and Technology founded?", "answers": [1945, 1950, 1974, 1938], "correct": 0},
+        "20": {"question": "Where is the round 'cardboard' chair at the entrance?", "answers": ["A-1", "Bibliotech", "Serowiec", "SKS"], "correct": 1}
     }
 }

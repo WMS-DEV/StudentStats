@@ -56,7 +56,7 @@ export const HomeForm = styled.form`
   border-radius: 1.5vh;
   padding: 4vh;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-  min-height: 40%;
+  height: min-content;
   min-width: min(60vh, 60vw);
   max-width: min(500px, 90vw);
   margin-top: 2vh;

@@ -6,10 +6,10 @@ import { useTranslation } from "react-i18next";
 
 export const LanguageMode = () => {
     const [_, setTemp] = useState();
-    const { isDataLoaded, refreshUserData } = useAuth();
+    const { isDataLoading, refreshUserData } = useAuth();
     const { t } = useTranslation();
 
-    const cantChangeLanguage = isDataLoaded && window.location.pathname === '/dashboard';
+    const cantChangeLanguage = isDataLoading && window.location.pathname === '/dashboard';
 
     const switchLanguageMode = () => {
         if(cantChangeLanguage) return;

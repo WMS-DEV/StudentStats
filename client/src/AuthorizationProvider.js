@@ -5,6 +5,14 @@ import { useTranslation } from "react-i18next";
 
 const AuthContext = createContext(null);
 
+// error enum
+export const ErrorMessageCode = {
+    errorUnknown: "errorUnknown",
+    errorNonActiveNoData: "errorNonActiveNoData",
+    errorNoData: "errorNoData",
+    errorWrongLogin: "errorWrongLogin",
+}
+
 export const RequestLoginAndRedirect = async () => {
   let headers = new Headers();
   headers.append("Content-Type", "application/json");
@@ -29,26 +37,6 @@ export const RequestLoginAndRedirect = async () => {
     });
 };
 
-export const AuthAndGetJWT = async (verifier) => {
-  let headers = new Headers();
-  headers.append("Content-Type", "application/json");
-
-  let requestOptions = {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify({
-      requestToken: localStorage.getItem("requestToken"),
-      tokenSecret: localStorage.getItem("tokenSecret"),
-      verifier: verifier,
-      universityId: localStorage.getItem("universityId"),
-    }),
-  };
-
-  return await fetch(`${apiLink}/auth/access-token`, requestOptions)
-    .then((response) => response.json())
-    .then((accessResponse) => accessResponse.jwt)
-    .catch((error) => console.log(error));
-};
 export const getData = async (JWT) => {
   if (JWT === "demo") return await getDemoData();
   const headers = new Headers();
@@ -64,9 +52,17 @@ export const getData = async (JWT) => {
 
   console.log("Data download");
   return await fetch(`${apiLink}/getData`, requestOptions)
-    .then((response) => response.json())
+    .then((response) => {
+        if (response.status === 404) {
+          throw new Error(ErrorMessageCode.errorNonActiveNoData);
+        } else if (response.status !== 200) {
+          throw new Error(ErrorMessageCode.errorUnknown);
+        }
+        return response.json()
+    })
     .catch((error) => {
       console.log(error);
+      throw error; // rethrow the error to be handled in the calling function
     });
 };
 
@@ -140,9 +136,11 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const { i18n } = useTranslation();
   const [userData, setUserData] = useState(null);
+  const [errorMessageCode, setErrorMessageCode] = useState(null);
 
-  const isLogged = localStorage.getItem('jwt') ? true : false;
-  const isDataLoaded = isLogged && !userData;
+  const isLogged = localStorage.getItem('jwt') ? true : false;  
+  const isDataLoading = isLogged && !userData;
+  const isError = errorMessageCode !== null;
 
   useEffect(() => {
     refreshUserData();
@@ -184,22 +182,68 @@ export const AuthProvider = ({ children }) => {
     navigate("/loginpage");
   };
 
+  const AuthAndGetJWT = async (verifier) => {
+    let headers = new Headers();
+    headers.append("Content-Type", "application/json");
+  
+    let requestOptions = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        requestToken: localStorage.getItem("requestToken"),
+        tokenSecret: localStorage.getItem("tokenSecret"),
+        verifier: verifier,
+        universityId: localStorage.getItem("universityId"),
+      }),
+    };
+  
+    return await fetch(`${apiLink}/auth/access-token`, requestOptions)
+      .then((response) => response.json())
+      .then((accessResponse) => accessResponse.jwt)
+      .catch((error) => {
+          console.log(error)
+          setErrorMessageCode(ErrorMessageCode.errorUnknown);
+      });
+  };
+
+  const handleDataDownload = async () => {
+    const savedJWT = localStorage.getItem("jwt");
+    if (savedJWT) {
+        try {
+            const uData = await getData(savedJWT);
+            if (uData !== undefined) {
+                setUserData(uData);
+                if(uData && uData.hasOwnProperty('content') && uData.content.length <= 1) {
+                    setErrorMessageCode("errorNoData");
+                }
+                navigate("/dashboard");
+            }
+            else handleLogout();
+        } catch (error) {
+            if (error && error.message === ErrorMessageCode.errorNonActiveNoData) {
+                setUserData({content: [], personalData: {studentStatus: "FALSE"}});
+                setErrorMessageCode(ErrorMessageCode.errorNonActiveNoData);
+                navigate("/dashboard");
+            } else {
+                console.error("Error fetching data:", error);
+                setErrorMessageCode(ErrorMessageCode.errorUnknown);
+                navigate("/dashboard");
+            }
+        }
+    } else navigate("/loginpage");
+  };
+
   const refreshUserData = async () => {
     if (window.location.pathname !== "/dashboard") return;
     setUserData(null);
-    const savedJWT = localStorage.getItem("jwt");
-    if (savedJWT) {
-      const uData = await getData(savedJWT);
-      if (uData !== undefined) setUserData(uData);
-      else handleLogout();
-    } else navigate("/loginpage");
+    handleDataDownload();
   };
 
   const handleLoginDemo = async (event) => {
     localStorage.setItem("jwt", "demo");
 
     const uData = await getDemoData();
-    setUserData(uData);
+    setUserData(uData); // change this to setUserData({content: []}); to see empty message
     navigate(userData !== undefined ? "/dashboard" : "/loginpage");
   };
 
@@ -208,13 +252,13 @@ export const AuthProvider = ({ children }) => {
     const JWT = savedJWT ? savedJWT : await AuthAndGetJWT(verifier);
     localStorage.setItem("jwt", JWT);
 
-    const uData = await getData(JWT);
-    setUserData(uData);
-    navigate(userData !== undefined ? "/dashboard" : "/loginpage");
+    handleDataDownload();
   };
 
   const value = {
-    isDataLoaded,
+    isDataLoading,
+    isError,
+    errorMessageCode,
     userData,
     refreshUserData: refreshUserData,
     onLoginClick: handleLoginRequest,

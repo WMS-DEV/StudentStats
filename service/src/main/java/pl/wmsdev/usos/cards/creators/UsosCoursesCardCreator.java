@@ -125,10 +125,7 @@ public class UsosCoursesCardCreator implements UsosCardCreator {
                         double cumulativeECTS = sumAllECTS.addAndGet(totalECTS);
                         return new StudentStatsChartValue(cumulativeECTS, semester.name());
                 })
-                .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
-                        Collections.reverse(list);
-                        return list;
-                }));
+                .collect(Collectors.toList());
     }
 
     private StudentStatsObject buildECTSChart(List<StudentStatsChartValue> values) {

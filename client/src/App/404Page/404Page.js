@@ -84,7 +84,7 @@ const TriviaButtons = ({ answers, correctAnswer, setQuestionId }) => {
         setUserAnswer(user);
         const isCorrect = user === correctAnswer;
         setStreak((oldStreak) => isCorrect ? oldStreak + 1 : 0);
-        setMessageAfterAnswer(getRandomMessage(t, isCorrect, isCorrect ? streak + 1 : 0, t('triviaHighscore', { streak })));
+        setMessageAfterAnswer(getRandomMessage(t, isCorrect, isCorrect ? streak + 1 : 0, t('triviaHighscore', { streak: streak + 1 })));
     }
     
     const refreshButtons = () => {

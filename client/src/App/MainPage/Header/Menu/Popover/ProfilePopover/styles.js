@@ -81,30 +81,6 @@ export const ProfileFooter = styled.div`
     justify-content: flex-end;
 `
 
-export const LogoutIcon = styled.svg.attrs({
-    version: '1.1',
-    xmlns: 'http://www.w3.org/2000/svg',
-    xmlnsXlink: 'http://www.w3.org/1999/xlink',
-  })`
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    transform-origin: center;
-    transition: inherit;
-    fill: ${({ theme }) => theme.colorMode.fontColor};
-`
-
-export const LogoutButton = styled.button`
-  width: 2rem;
-  height: 2rem;
-  border: none;
-  position: relative;
-  background-color: transparent;
-  cursor: pointer;
-`
-
 export const ProfileDataRow = styled.div`
     padding: 0 .5rem;
     height: auto;

@@ -7,9 +7,14 @@ const GRADES_FILENAME = "grades.csv";
 
 export const GradesDownloadIcon = forwardRef(({ onClick }, ref) => {
   const { t } = useTranslation();
-  const { isDataLoaded } = useAuth();
+  const { isDataLoading, isError } = useAuth();
+
   return (
-    <S.GradesDownloadAnchor ref={ref} download={GRADES_FILENAME} data-desc={t('menuTipGrades')} className={!isDataLoaded ? '': 'disabled'}>
+    <S.GradesDownloadAnchor
+      {...((!isDataLoading && !isError) && { ref, download: GRADES_FILENAME })}
+      data-desc={t('menuTipGrades')}
+      className={isDataLoading || isError ? 'disabled' : ''}
+    >
       <S.GradesDownloadIcon viewBox="0 0 32 32" onClick={onClick}>
       <g id="surface1">
           <path d="M 19.304688 4.921875 L 18.226562 7.886719 L 20.410156 7.886719 Z M 19.304688 4.921875 "/>

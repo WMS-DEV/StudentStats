@@ -12,9 +12,9 @@ const FilterIcon = () => (
 
 export const CategoryFilter = ({ onClick }) => {
     const { t } = useTranslation();
-    const { isDataLoaded } = useAuth();
+    const { isDataLoading, isError } = useAuth();
     return (
-    <S.CategoryFilterButton onClick={onClick} data-desc={t('menuTipFilters')} disabled={isDataLoaded}>
+    <S.CategoryFilterButton onClick={onClick} data-desc={t('menuTipFilters')} disabled={isDataLoading || isError}>
         <FilterIcon/>
     </S.CategoryFilterButton>
     )

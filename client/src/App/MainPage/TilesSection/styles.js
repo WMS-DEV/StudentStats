@@ -40,7 +40,7 @@ export const Tile = styled.div`
         height: 100%;
         --shimmer-color: ${({ theme }) => theme.colorMode.shimmerColor};
         background: linear-gradient(-45deg, transparent 25%, var(--shimmer-color) 50%, transparent 75%);
-        background-size: 200% 100%;
+        background-size: 400% 100%;
         pointer-events: none;
     }
 
@@ -58,6 +58,8 @@ export const TilesSection = styled.div(({theme, isDataEmpty}) => `
     padding: 7vh 8vw;
     height: calc(100vh - 4rem);
     width: 100%;
+    max-width: 2000px;
+    margin: auto;
     position: relative;
     top: 4.1rem;
 
@@ -69,7 +71,7 @@ export const TilesSection = styled.div(({theme, isDataEmpty}) => `
     grid-template-columns: repeat(5, 1fr);
     // grid-template-rows: repeat(3, 25vh);
     grid-auto-flow: row;
-    grid-auto-rows: max(25vh, 10rem);
+    grid-auto-rows: clamp(10rem, 25vh, 15rem);
     row-gap: 2rem;
     column-gap: 2rem;
     @media (max-width: 1000px) {
@@ -95,8 +97,37 @@ export const TilesSection = styled.div(({theme, isDataEmpty}) => `
 
         & ${Tile}::before {
             opacity: 0.5;
-            animation: shimmer 2s infinite linear;
+            animation: shimmer 4s infinite linear;
         }
     ` : ``};
 `);
 
+export const EmptyInformation = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    height: 100%;
+    width: 100%;
+    grid-column: span 5;
+    color: ${({ theme }) => theme.colorMode.fontColor};
+    font-size: 2rem;
+    text-align: center;
+    text-wrap: balance;
+    line-height: 1.5;
+    font-weight: 400;
+
+    @keyframes showEmptyInformation {
+        from {
+            opacity: 0;
+            scale: 0.9;
+        }
+        to {
+            scale: 1;
+            opacity: 1;
+        }
+    }
+
+    animation: showEmptyInformation 400ms ease-in-out;
+`;

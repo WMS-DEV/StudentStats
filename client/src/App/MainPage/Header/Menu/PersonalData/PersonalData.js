@@ -13,9 +13,9 @@ const UserIcon = () => (
 
 export const PersonalData = ({ onClick }) => {
     const { t } = useTranslation();
-    const { isDataLoaded } = useAuth();
+    const { isDataLoading } = useAuth();
     return (
-    <S.PersonalDataButton onClick={onClick} data-desc={t('menuTipPersonalData')} disabled={isDataLoaded}>
+    <S.PersonalDataButton onClick={onClick} data-desc={t('menuTipPersonalData')} disabled={isDataLoading}>
         <UserIcon/>
     </S.PersonalDataButton>
     );

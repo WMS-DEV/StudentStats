@@ -56,7 +56,7 @@ export const LoginPage = () => {
 
   useEffect(() => {
     getUniversities().then(response => {
-      if(!response) return setIsConnectedToServer(false);
+      if(!response) return setIsConnectedToServer(false); // change this to true to get through login
       
       setIsConnectedToServer(true);
       setUniversities(response);

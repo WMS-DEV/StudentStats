@@ -4,6 +4,7 @@ import { CategoryFilter } from "./CategoryFilter/CategoryFilter";
 import { ColorMode } from "./ColorMode/ColorMode";
 import { LanguageMode } from "./LanguageMode/LanguageMode";
 import { PersonalData } from "./PersonalData/PersonalData";
+import { LogoutButton } from "./Logout/Logout";
 import { ProfilePopover } from "./Popover/ProfilePopover/ProfilePopover";
 import { FilterPopover } from "./Popover/FilterPopover/FilterPopover";
 import { GradesDownloadIcon } from "./GradesDownload/GradesDownload";
@@ -60,6 +61,7 @@ export const Menu = ({ loggedIn }) => {
         />
       )}
       {loggedIn && <PersonalData onClick={switchProfilePopoverVisibility} disabled={true} />}
+      {loggedIn && <LogoutButton />}
       {showProfilePopover && (
         <ProfilePopover
           setShowPopover={setShowProfilePopover}

@@ -227,10 +227,10 @@ const positionTiles = (tiles, tilesOrderCopy) => {
 export const TilesSection = () => {
     const [tiles, setTiles] = useState([]);
     const tilesOrder = useRef([]);
-    const { i18n } = useTranslation();
+    const { i18n, t } = useTranslation();
 
     const { tilesFilter } = useContext(FiltersContext);
-    const { userData } = useAuth();
+    const { userData ,isError, errorMessageCode } = useAuth();
 
     useEffect(() => {
         if(!userData) return;
@@ -238,7 +238,6 @@ export const TilesSection = () => {
     }, [userData]);
 
     useEffect(() => {
-        // localStorage.setItem('tiles', JSON.stringify(tilesPack));
         if(!userData) {
             setTiles([]);
             return;
@@ -257,9 +256,28 @@ export const TilesSection = () => {
         setTiles(newTiles);
     }, [userData, tilesFilter, i18n.language]);
 
-    // const [userData, setUserData] = useState(null);
-
-    if(tiles && tiles.length > 0){
+    if(isError) {
+        // error state - data is not available
+        return (
+            <S.TilesSection>
+                <S.EmptyInformation>
+                    {t(errorMessageCode ? errorMessageCode : 'errorUnknown')}
+                </S.EmptyInformation>
+            </S.TilesSection>
+        )
+    } 
+    if(tiles && tiles.length === 1) {
+        // only branding tile - no data available
+        return (
+            <S.TilesSection>
+                <S.EmptyInformation>
+                    {t('errorTilesEmpty')}
+                </S.EmptyInformation>
+            </S.TilesSection>
+        )
+    }
+    if(tiles && tiles.length > 1){
+        // tiles are available - data is loaded
         return(
             <S.TilesSection>
                 {tilesOrder.current.map((size, ix) => {return (tiles[ix].category === 'BRANDING') ? <TileBranding data={tiles[ix]} key={ix}/>
@@ -268,31 +286,37 @@ export const TilesSection = () => {
                                                     : <TileSmall data={tiles[ix]} key={ix}/>})}
             </S.TilesSection>
         )
-    } else {
-        // title, subtitle, value1, value2
-        const emptyData = {
-            content: {
-                title: '',
-                subtitle: '',
-                value: '',
-                values: [],
-                value1: '',
-                value2: ''
-            }
-        }
-        return <S.TilesSection isDataEmpty={true}>
-            <TileSmall data={emptyData}></TileSmall>
-            <TileMedium data={emptyData}></TileMedium>
-            <TileMedium data={emptyData}></TileMedium>
-            <TileMedium data={emptyData}></TileMedium>
-            <TileSmall data={emptyData}></TileSmall>
-            <TileMedium data={emptyData}></TileMedium>
-            <TileSmall data={emptyData}></TileSmall>
-            <TileMedium data={emptyData}></TileMedium>
-            <TileMedium data={emptyData}></TileMedium>
-            <TileMedium data={emptyData}></TileMedium>
-            <TileSmall data={emptyData}></TileSmall>
-            <TileMedium data={emptyData}></TileMedium>
-        </S.TilesSection>
     }
+    
+    // loading state - no data yet
+    const emptyData = {
+        content: {
+            title: '',
+            subtitle: '',
+            value: '',
+            values: [],
+            value1: '',
+            value2: ''
+        }
+    }
+    return <S.TilesSection isDataEmpty={true}>
+        <TileMedium data={emptyData}></TileMedium>
+        <TileSmall  data={emptyData}></TileSmall>
+        <TileSmall  data={emptyData}></TileSmall>
+        <TileSmall  data={emptyData}></TileSmall>
+
+        <TileSmall  data={emptyData}></TileSmall>
+        <TileMedium data={emptyData}></TileMedium>
+        <TileMedium data={emptyData}></TileMedium>
+
+        <TileMedium data={emptyData}></TileMedium>
+        <TileSmall  data={emptyData}></TileSmall>
+        <TileMedium data={emptyData}></TileMedium>
+        <TileSmall  data={emptyData}></TileSmall>
+        <TileMedium data={emptyData}></TileMedium>
+        <TileMedium data={emptyData}></TileMedium>
+        <TileMedium data={emptyData}></TileMedium>
+        <TileSmall  data={emptyData}></TileSmall>
+        <TileMedium data={emptyData}></TileMedium>
+    </S.TilesSection>
 }

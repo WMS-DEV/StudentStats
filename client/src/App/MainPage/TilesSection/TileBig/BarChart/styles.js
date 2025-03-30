@@ -16,13 +16,13 @@ export const BarChart = styled.div`
 
 export const Heading = styled.div`
     height: 20%;
-    padding: 5vh 4vh 0;
+    padding: 1.5rem 4vh 0;
     text-align: center;
     color: ${({ theme }) => theme.colorMode.tileBigBar.fontColor};
     font-family: "JetBrains Mono";
 
     @media (max-width: 1000px) {
-        padding: 3vh 1.5vh 0;
+        padding: 1rem 1.5vh 0;
         height: 25%;
     }
 `;
