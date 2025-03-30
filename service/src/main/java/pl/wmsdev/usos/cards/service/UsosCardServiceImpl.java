@@ -28,7 +28,6 @@ public class UsosCardServiceImpl implements UsosCardService {
 
     @Override
     public List<StudentStatsObject> getCards(PersonalData personalData, LocaleContext localeContext) {
-        log.info("Creating cards for USOS student stats");
         LocaleContextHolder.setLocaleContext(localeContext);
         List<Studies> studies = personalData.getStudies();
 
