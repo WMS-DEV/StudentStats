@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 import pl.wmsdev.data.dto.ProgrammeDetails;
 import pl.wmsdev.usos4j.client.UsosUserAPI;
 import pl.wmsdev.usos4j.model.progs.UsosProgramme;
+import pl.wmsdev.usos4j.model.progs.UsosStudentProgramme;
 import pl.wmsdev.utils.converter.ProgrammeDetailsConverter;
+import pl.wmsdev.utils.exceptions.NotFoundException;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -20,8 +23,13 @@ public class ProgrammeDetailsServiceImpl implements ProgrammeDetailsService {
     @Async
     @Override
     public CompletableFuture<ProgrammeDetails> getProgrammeDetails() {
-        UsosProgramme programme = userApi.progs().student().get(0).programme(); // Every student has at least 1 programme
+        List<UsosStudentProgramme> programmes = userApi.progs().student();
 
+        if (programmes.isEmpty()) {
+            throw new NotFoundException("Student has no active study programme.");
+        }
+
+        UsosProgramme programme = programmes.get(0).programme();
         return CompletableFuture.completedFuture(programmeDetailsConverter.toProgrammeDetails(programme));
     }
 }

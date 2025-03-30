@@ -1,6 +1,5 @@
 package pl.wmsdev.usos.model;
 
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;

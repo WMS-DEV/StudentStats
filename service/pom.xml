@@ -18,7 +18,7 @@
 		<usos4j.version>1.1.6</usos4j.version>
 		<springdoc.openapi.starter.version>2.8.6</springdoc.openapi.starter.version>
 		<jwt.version>0.12.6</jwt.version>
-		<jwt-api.version>0.11.5</jwt-api.version>
+		<jwt-api.version>0.12.6</jwt-api.version>
 		<sentry.starter.version>8.5.0</sentry.starter.version>
 		<opencsv.version>5.10</opencsv.version>
 		<apache.commons.version>1.14.0</apache.commons.version>

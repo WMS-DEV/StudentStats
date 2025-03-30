@@ -23,5 +23,4 @@ public class PersonalData {
     private String usosProfileUrl;
     private String photoUrl;
     private List<Studies> studies;
-
 }

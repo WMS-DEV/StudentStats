@@ -29,8 +29,6 @@ public class UsosTokenServiceImpl implements UsosTokenService {
 
     @Override
     public UsosAccessToken getAccessToken(UsosRequestToken requestToken, String verifier, String universityId) {
-        var usos = usosFactory.createUsos(universityId);
-
-	    return usos.getAccessToken(requestToken, verifier);
+	    return usosFactory.createUsos(universityId).getAccessToken(requestToken, verifier);
     }
 }
