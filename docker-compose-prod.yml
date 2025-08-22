@@ -1,0 +1,53 @@
+services:
+  client:
+    container_name: client
+    image: ghcr.io/wms-dev/student-stats-client:latest
+    restart: always
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      target: production
+      args:
+        - REACT_APP_SENTRY_DSN=${CLIENT_SENTRY_DSN}
+        - REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
+    environment:
+      - VIRTUAL_HOST=${CLIENT_HOST}
+      - LETSENCRYPT_HOST=${CLIENT_HOST}
+      - VIRTUAL_PORT=3000
+
+  server:
+    container_name: server
+    image: ghcr.io/wms-dev/student-stats-server:latest
+    restart: unless-stopped
+    build:
+      context: ./service
+      dockerfile: Dockerfile
+    environment:
+        - SERVICE_JWT_SECRET_KEY=${SERVICE_JWT_SECRET_KEY}
+        - SERVICE_DB_URL=${SERVICE_DB_URL}
+        - SERVICE_DB_LOGIN=${SERVICE_DB_LOGIN}
+        - SERVICE_DB_PASSWORD=${SERVICE_DB_PASSWORD}
+        - SERVICE_SENTRY_DSN=${SERVICE_SENTRY_DSN}
+        - SPRING_PROFILES_ACTIVE=${SERVICE_SPRING_PROFILES_ACTIVE}
+        - LETSENCRYPT_HOST=${SERVER_HOST}
+        - VIRTUAL_HOST=${SERVER_HOST}
+        - VIRTUAL_PORT=${SERVER_PORT}
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${SERVICE_DB_LOGIN}
+      POSTGRES_PASSWORD: ${SERVICE_DB_PASSWORD}
+      POSTGRES_DB: ${SERVICE_DB_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
+
+networks:
+  default:
+    name: student-stats-network
+    external: true
