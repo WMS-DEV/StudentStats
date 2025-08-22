@@ -1,6 +1,5 @@
 services:
   client:
-    container_name: client
     image: ghcr.io/wms-dev/student-stats-client:latest
     restart: always
     build:
@@ -16,7 +15,6 @@ services:
       - VIRTUAL_PORT=3000
 
   server:
-    container_name: server
     image: ghcr.io/wms-dev/student-stats-server:latest
     restart: unless-stopped
     build:

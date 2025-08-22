@@ -16,6 +16,4 @@ jobs:
           sot_repo: WMS-DEV/StudentStats-internal
           destination_repo: WMS-DEV/StudentStats
           committer: WMS_BOT <kontakt@wmsdev.pl>
-          push_exclude: |
-            service/src/main/resources/data/.supported_universities.csv
-            .github/workflows/docker-compose-build-push.yml
+          push_exclude: service/src/main/resources/data/.supported_universities.csv
