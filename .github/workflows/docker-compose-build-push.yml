@@ -31,8 +31,14 @@ jobs:
         run: |
           set -e
           docker compose build
+        env:
+          CLIENT_SENTRY_DSN: https://33b09aff344f01f9dd17d27c9256a152@sentry.team.wmsdev.pl/7
+          REACT_APP_BACKEND_URL: https://studentstats.internal.wmsdev.pl
 
       - name: Push images with Docker Compose
         run: |
           set -e
           docker compose push
+        env:
+          CLIENT_SENTRY_DSN: https://33b09aff344f01f9dd17d27c9256a152@sentry.team.wmsdev.pl/7
+          REACT_APP_BACKEND_URL: https://studentstats.internal.wmsdev.pl
